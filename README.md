@@ -1,19 +1,15 @@
+# Blink Temp 
 
+### What Does It Do?:
+- This program uses a rapsberry pi, breadboard, an LED, touch sensor, and a temperature detector. 
+- When you hook up everything properly on the breadboard, and you run blinkTemp.py, it should make the LED blink when you touch the sensor, read the temperature and display the temperature in the terminal. 
 
- ![SUNY New Paltz Logo](https://www.newpaltz.edu/media/identity/logos/newpaltzlogo.jpg)
+### What Do You Need?:
+1. **Hardware:** LED, wires, breadboard, raspberry pi, touch sensor, temperature detector. 
+2. **Software:** You will need to install the Adafruit
+DHT Python library. Do this by simply typing in the following: 
+    
+    * sudo python3 -m pip install -upgrade pip setuptools wheel
+    * sudo pip3 install Adafruit_DHT
 
-# Spring 2020 Embedded Linux Class.
-This respository documents my class work and projects for the class CPS342.
-1. **Personal Information:**
-
-    Name: Taina Malave
-
-    Major: Computer Science
-
-    ID: [N03678419](https://github.com/N03678419)
-
-    Year: Junior
-
-2. **Class Start Date:** January 22, 2020
-
-3. **Class End Date:** May 6, 2020
+Assuming everything is wired up correct, the program should work!
