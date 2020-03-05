@@ -1,15 +1,15 @@
-# Blink Temp 
+# Temperature Log 
 
-### What Does It Do?:
-- This program uses a rapsberry pi, breadboard, an LED, touch sensor, and a temperature detector. 
-- When you hook up everything properly on the breadboard, and you run blinkTemp.py, it should make the LED blink when you touch the sensor, read the temperature and display the temperature in the terminal. 
+## What is the purpose of this branch?: 
+    This branch contains all the information needed in order to get your touch sensor to blink an LED on the Raspberry Pi and read the temperature of the area that you're in, into a CSV file. 
 
-### What Do You Need?:
-1. **Hardware:** LED, wires, breadboard, raspberry pi, touch sensor, temperature detector. 
-2. **Software:** You will need to install the Adafruit
-DHT Python library. Do this by simply typing in the following: 
-    
-    * sudo python3 -m pip install -upgrade pip setuptools wheel
-    * sudo pip3 install Adafruit_DHT
+## What is needed?: 
+    • Hardware: Raspberry Pi, breadboard, LED, touch sensor, temperature sensor. 
 
-Assuming everything is wired up correct, the program should work!
+    • Software: You will need to install the Adafruit DHT Python library. Do this by simply typing in the following:
+
+        • sudo python3 -m pip install -upgrade pip setuptools wheel
+        • sudo pip3 install Adafruit_DHT
+
+## Assuming you wired everything correctly...
+    Once you wire everything, correctly, and you run tempLog.py - it should proceed to blink the LED and then read the temperature into a CSV file. 
