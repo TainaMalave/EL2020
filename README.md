@@ -12,4 +12,4 @@
         • sudo pip3 install Adafruit_DHT
 
 ## Assuming you wired everything correctly...
-    Once you wire everything, correctly, and you run tempLog.py - it should proceed to blink the LED and then read the temperature into a CSV file. 
+   -  Once you wire everything, correctly, and you run tempLog.py - it should proceed to blink the LED and then read the temperature into a CSV file. 
