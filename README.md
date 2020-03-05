@@ -1,7 +1,7 @@
 # Temperature Log 
 
 ## What is the purpose of this branch?: 
-    This branch contains all the information needed in order to get your touch sensor to blink an LED on the Raspberry Pi and read the temperature of the area that you're in, into a CSV file. 
+   - This branch contains all the information needed in order to get your touch sensor to blink an LED on the Raspberry Pi and read the temperature of the area that you're in, into a CSV file. 
 
 ## What is needed?: 
     • Hardware: Raspberry Pi, breadboard, LED, touch sensor, temperature sensor. 
