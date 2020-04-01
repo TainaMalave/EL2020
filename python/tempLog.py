@@ -1,71 +1,80 @@
-# -*- coding: utf-8 -*-
-#Import Libraries we will be using
+#Import Libraries
 import RPi.GPIO as GPIO
 import Adafruit_DHT
 import time
-import datetime
 import os
-import sqlite3
+import sqlite3 as sql
+import smtplib
 
-#Assign GPIO pins
+
+#Globals
 redPin = 27
+greenPin = 22
 tempPin = 17
-buttonPin = 26
 
 #Temp and Humidity Sensor
-tempSensor = Adafruit_DHT.DHT11
-#LED Variables--------------------------------------------------------
+tempSensor = Adafruit_DHT.DHT22
+
+#LED Variables---------------------------------------------------------------------------------------
 #Duration of each Blink
-blinkDur = .3
+blinkDur = .1
 #Number of times to Blink the LED
 blinkTime = 7
-#---------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
-# connection to DB and making a cusor object so that i can access 
-conn = sqlite3.connect('temperature.db')
-c = conn.cursor()
 
-c.execute('''CREATE TABLE IF NOT EXISTS temperature
-             (Date text, Temperature int, Humidity int)''')
+#Connect to the database
+con = sql.connect('temperature.db')
+cur = con.cursor()
+
+#Set the initial checkbit to 0.  This will throw a warning when run, but will still work just fine
+eChk = 0
 
 #Initialize the GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(redPin,GPIO.OUT)
-GPIO.setup(buttonPin, GPIO.IN)
+GPIO.setup(greenPin,GPIO.OUT)
 
 def oneBlink(pin):
-    GPIO.output(pin,True)
-    time.sleep(blinkDur)
-    GPIO.output(pin,False)
-    time.sleep(blinkDur)
+	GPIO.output(pin,True)
+	time.sleep(blinkDur)
+	GPIO.output(pin,False)
+	time.sleep(blinkDur)
 
-def readF(tempPin):
-    humidity, temperature = Adafruit_DHT.read_retry(tempSensor,tempPin)
-    temperature = temperature * 9/5.0 +32
-    if humidity is not None and temperature is not None:
-        tempFahr = '{0:0.1f}*F'.format(temperature)
-        hum = '{0:0.1f}%'.format(humidity)
-    else:
-        print('Error Reading Sensor')
-    return tempFahr, hum
+def readDHT(tempPin):
+	humidity, temperature = Adafruit_DHT.read_retry(tempSensor, tempPin)
+	temperature = temperature * 9/5.0 +32
+	if humidity is not None and temperature is not None:
+		tempF = '{0:0.1f}'.format(temperature)
+		humid = '{1:0.1f}'.format(temperature, humidity)
+	else:
+		print('Error Reading Sensor')
+
+	return tempF, humid
+
+#Dummy time for first itteration of the loop
+oldTime = 60
+
+#Read Temperature right off the bat
+tempF, hum = readDHT(tempPin)
 
 try:
-    starttime=time.time()
-    while True:
-        input_state = GPIO.input(buttonPin)
-        if input_state == True:
-            for i in range (blinkTime):
-                oneBlink(redPin)
-            time.sleep(.2)
-            tempFahr, hum = readF(tempPin)
-            date = datetime.datetime.now()
-            print(tempFahr ,hum)
-            params = (date, tempFahr, hum)
-            c.execute('INSERT INTO temperature VALUES (?, ?, ?)',(params))
-            conn.commit()
-            time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+	while True:
+		if time.time() - oldTime > 59:
+			tempF, humid = readDHT(tempPin)
+			cur.execute('INSERT INTO temperature values(?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid))
+			con.commit()
+
+			table = con.execute("select * from temperature")
+			os.system('clear')
+			print "%-30s %-20s %-20s" %("Date/Time", "Temp", "Humidity")
+			for row in table:
+				print "%-30s %-20s %-20s" %(row[0], row[1], row[2])
+			oldTime = time.time()
 
 except KeyboardInterrupt:
-    os.system('clear')
-    print('Thanks for Blinking and Thinking!')
-    GPIO.cleanup()
+	os.system('clear')
+	con.close()
+	print ("Temperature Logger and Web App Exited Cleanly")
+	exit(0)
+	GPIO.cleanup
