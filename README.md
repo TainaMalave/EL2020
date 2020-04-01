@@ -1,15 +1,13 @@
-# Temperature Log into Database
+# Embedded Linux Midterm Assignment
 
 ## What is the purpose of this branch?: 
-   - This branch contains all the information needed in order to get your touch sensor to blink an LED on the Raspberry Pi and read the temperature and hudmidity of the area that you're in, into a sqlite3 database. It will also blink the light, read the temperature and humidity into the database file every 60 seconds so you can keep track of temperature and humidity in the area you're in. 
+   - The purpose of this branch is to contain all the content related to my midterm project for CPS 342 - Embedded Linux. The midterm project for this class is to take the flaskServer.py and index.html files and get them to communicate with each other and work with our temperature logger scripts. It will display a website that graphs the temperatures based on the temperatures that the logger script reads in from our temperature sensors. Finally, we were to create a button on the index.html page and have it communicate so that when it is pressed, it blinks the LED light on our breadboards. 
 
 ## What is needed?: 
-    • Hardware: Raspberry Pi, breadboard, LED, touch sensor, temperature sensor. 
+    • Hardware: Raspberry Pi, breadboard, LED, temperature sensor. 
 
     • Software: You will need to install the Adafruit DHT Python library. Do this by simply typing in the following:
 
         • sudo python3 -m pip install -upgrade pip setuptools wheel
         • sudo pip3 install Adafruit_DHT
 
-## Assuming you wired everything correctly...
-   • Once you wire everything, correctly, and you run python3 tempLog.py - it should proceed to blink the LED and then read the temperature/humidity into a database file every 60 seconds.. 

@@ -13,7 +13,7 @@ greenPin = 22
 tempPin = 17
 
 #Temp and Humidity Sensor
-tempSensor = Adafruit_DHT.DHT22
+tempSensor = Adafruit_DHT.DHT11
 
 #LED Variables---------------------------------------------------------------------------------------
 #Duration of each Blink
@@ -64,12 +64,7 @@ try:
 			tempF, humid = readDHT(tempPin)
 			cur.execute('INSERT INTO temperature values(?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid))
 			con.commit()
-
-			table = con.execute("select * from temperature")
-			os.system('clear')
-			print "%-30s %-20s %-20s" %("Date/Time", "Temp", "Humidity")
-			for row in table:
-				print "%-30s %-20s %-20s" %(row[0], row[1], row[2])
+			print('Temp is: ' + tempF)
 			oldTime = time.time()
 
 except KeyboardInterrupt:

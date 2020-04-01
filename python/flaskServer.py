@@ -35,7 +35,7 @@ def chartData():
         chartData.append({"Date": row[0], "Temperature": float(row[1])})
     return Response(json.dumps(chartData), mimetype='application/json')
 
-@app.route("/LED")
+@app.route("/blinkLED")
 def LEDBlink():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(redPin,GPIO.OUT)
