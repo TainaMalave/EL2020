@@ -1,0 +1,2 @@
+# Raspberry Pi Weather Station
+This is a repository for my CPS342 - Embedded Linux final project. For this final project I have decided to build a weather station that will keep track of the local weather in my area, track the data and display it on a website that is run with Flask.
