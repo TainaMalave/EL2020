@@ -67,15 +67,13 @@ def light(lightPin):
 	GPIO.setup(lightPin, GPIO.IN)
 	lOld = not GPIO.input(lightPin)
 	print('Starting up the LIGHT Module (click on STOP to exit)')
-	time.sleep(60)
-	while True:
-  		if GPIO.input(lightPin) != lOld:
-			  if GPIO.input(lightPin):
-				  print ('It is DARK')
-			  else:
-				  print ('It is LIGHT') 
+	time.sleep(0.5)
+	if GPIO.input(lightPin) != lOld:
+		if GPIO.input(lightPin):
+			print ('It is DARK')
+		else:
+			print ('It is LIGHT') 
 	lOld = GPIO.input(lightPin)
-	time.sleep(60)
 
 #Dummy time for first itteration of the loop
 oldTime = 60

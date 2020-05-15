@@ -24,10 +24,10 @@ def index():
 
 @app.route("/sqlData")
 def chartData():
-    con = sql.connect('temperature.db')
+    con = sql.connect('weather.db')
     cur = con.cursor()
     con.row_factory = sql.Row
-    cur.execute("SELECT Date, Temperature FROM temperature WHERE Temperature > 60")
+    cur.execute("SELECT date, temperature FROM weather WHERE temperature > 60")
     dataset = cur.fetchall()
     print (dataset)
     chartData = []
