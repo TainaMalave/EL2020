@@ -12,6 +12,7 @@ import Adafruit_BMP.BMP085 as BMP085
 redPin = 27
 greenPin = 22
 tempPin = 17
+lightPin = 23
 
 #Temp and Humidity Sensor
 tempSensor = Adafruit_DHT.DHT11
@@ -58,6 +59,24 @@ def readDHT(tempPin):
 
 	return tempF, humid
 
+
+def light(lightPin):
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setwarnings(False)
+	#LIGHT_PIN = 23
+	GPIO.setup(lightPin, GPIO.IN)
+	lOld = not GPIO.input(lightPin)
+	print('Starting up the LIGHT Module (click on STOP to exit)')
+	time.sleep(60)
+	while True:
+  		if GPIO.input(lightPin) != lOld:
+			  if GPIO.input(lightPin):
+				  print ('It is DARK')
+			  else:
+				  print ('It is LIGHT') 
+	lOld = GPIO.input(lightPin)
+	time.sleep(60)
+
 #Dummy time for first itteration of the loop
 oldTime = 60
 
@@ -70,12 +89,19 @@ try:
 			tempF, humid = readDHT(tempPin)
 			cur.execute('INSERT INTO weather values(?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid))
 			con.commit()
+
+			#Printing to the terminal so that I can keep track of the readings. 
 			print('Temp is: ' + tempF)
 			print('Humidity is: ' + humid)
 			print('Pressure is: ' + pressureReading)
 			print('Sea Level Pressure is: ' + seaReading)
 			print('The altitude is: ' + altitudeReading)
+			light(lightPin)
+
+			# This is the timer that will excute the code every 60 seconds.
 			oldTime = time.time()
+
+
 
 except KeyboardInterrupt:
 	os.system('clear')
