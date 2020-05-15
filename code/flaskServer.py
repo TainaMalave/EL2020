@@ -59,9 +59,9 @@ def light(lightPin):
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     GPIO.setup(lightPin, GPIO.IN)
-    lOld = not GPIO.input(lightPin)
+    LorD = not GPIO.input(lightPin)
     time.sleep(0.5)
-    if GPIO.input(lightPin) != lOld:
+    if GPIO.input(lightPin) != LorD:
         if GPIO.input(lightPin):
             lightOrDark = 'DARK'
             alert()
