@@ -63,5 +63,3 @@ Start by plugging the ground and VCC in, just like how we did for the pressure s
 For the light sensor, plug the ground into the ground and VCC into VCC. Finally there is a DO port and you plug that into GPIO 23. 
 
 All the sensors should be wired up at this point. Below is a picture of my sensors and breadboard.
-
-![Pi](pi.jpg)
