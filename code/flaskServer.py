@@ -35,6 +35,10 @@ def chartData():
         chartData.append({"Date": row[0], "Temperature": float(row[1])})
     return Response(json.dumps(chartData), mimetype='application/json')
 
+@app.route("/currentStats")
+def displayStats():
+    
+
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', port=2020, debug=True, use_reloader=False)

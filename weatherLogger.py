@@ -1,31 +1,19 @@
 #Import Libraries
-import Adafruit_GPIO.I2C as I2C
 import RPi.GPIO as GPIO
 import Adafruit_DHT
 import time
 import os
 import sqlite3 as sql
-#This is the library to make the sensor work. I did not create this. These sensors are also depricated and aren't used as much.
-import Adafruit_BMP.BMP085 as BMP085 
+import smtplib
+
 
 #Globals
 redPin = 27
 greenPin = 22
 tempPin = 17
-lightPin = 23
 
 #Temp and Humidity Sensor
 tempSensor = Adafruit_DHT.DHT11
-
-# Pressure Sensor Readings
-sensor = BMP085.BMP085() # Calling the sensor 
-pressure = sensor.read_pressure() 
-pressureReading = '{0:0.2f}'.format(pressure)
-seaLvl = sensor.read_sealevel_pressure()
-seaReading = '{0:0.2f}'.format(seaLvl)
-altitude = sensor.read_altitude()
-altitudeReading = '{0:0.2f}'.format(altitude)
-
 
 #LED Variables---------------------------------------------------------------------------------------
 #Duration of each Blink
@@ -47,6 +35,11 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(greenPin,GPIO.OUT)
 
+def oneBlink(pin):
+	GPIO.output(pin,True)
+	time.sleep(blinkDur)
+	GPIO.output(pin,False)
+	time.sleep(blinkDur)
 
 def readDHT(tempPin):
 	humidity, temperature = Adafruit_DHT.read_retry(tempSensor, tempPin)
@@ -59,20 +52,6 @@ def readDHT(tempPin):
 
 	return tempF, humid
 
-
-def light(lightPin):
-	GPIO.setmode(GPIO.BCM)
-	GPIO.setwarnings(False)
-	GPIO.setup(lightPin, GPIO.IN)
-	lOld = not GPIO.input(lightPin)
-	time.sleep(0.5)
-	if GPIO.input(lightPin) != lOld:
-		if GPIO.input(lightPin):
-			print ('It is DARK')
-		else:
-			print ('It is LIGHT') 
-	lOld = GPIO.input(lightPin)
-
 #Dummy time for first itteration of the loop
 oldTime = 60
 
@@ -83,25 +62,14 @@ try:
 	while True:
 		if time.time() - oldTime > 59:
 			tempF, humid = readDHT(tempPin)
-			cur.execute('INSERT INTO weather values(?,?,?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid,pressureReading))
+			cur.execute('INSERT INTO weather values(?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid))
 			con.commit()
-
-			#Printing to the terminal so that I can keep track of the readings. 
 			print('Temp is: ' + tempF)
-			print('Humidity is: ' + humid)
-			print('Pressure is: ' + pressureReading)
-			print('Sea Level Pressure is: ' + seaReading)
-			print('The altitude is: ' + altitudeReading)
-			light(lightPin)
-
-			# This is the timer that will excute the code every 60 seconds.
 			oldTime = time.time()
-
-
 
 except KeyboardInterrupt:
 	os.system('clear')
 	con.close()
-	print ("Weather Logger and Web App Exited Cleanly")
+	print ("Temperature Logger and Web App Exited Cleanly")
 	exit(0)
 	GPIO.cleanup
