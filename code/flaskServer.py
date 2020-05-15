@@ -16,16 +16,33 @@ import time
 import Adafruit_GPIO.I2C as I2C
 import Adafruit_BMP.BMP085 as BMP085 
 import Adafruit_DHT
+import smtplib
+import socket
 
-#Globals
+#Globals Variables
 redPin = 27
 tempPin = 17
 lightPin = 23
 tempSensor = Adafruit_DHT.DHT11
 GPIO.setmode(GPIO.BCM)
-sensor = BMP085.BMP085() # Calling the sensor 
+sensor = BMP085.BMP085() 
 app = Flask(__name__)
 
+# Variables for sending email
+eFROM = "Taina.Malave@gmail.com"
+eTO = "8456374836@vtext.com"
+Subject = "Get Yo Pi From Outside"
+server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+
+# function to send alert to my phone
+def alert():
+    Text = "It's DARK OUTSIDE! GET YOUR PI!"
+    eMessage = 'Subject: {}\n\n{}'.format(Subject, Text)
+    server.login("Taina.Malave@gmail.com", "elqvwmkbuzdrzwiq")
+    server.sendmail(eFROM, eTO, eMessage)
+    server.quit
+
+# Function to Get Temp and Humidity
 def readDHT(tempPin):
 	humidity, temperature = Adafruit_DHT.read_retry(tempSensor, tempPin)
 	temperature = temperature * 9/5.0 +32
@@ -37,6 +54,7 @@ def readDHT(tempPin):
 
 	return tempF, humid
 
+# Function to get Light or Dark
 def light(lightPin):
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
@@ -46,6 +64,7 @@ def light(lightPin):
     if GPIO.input(lightPin) != lOld:
         if GPIO.input(lightPin):
             lightOrDark = 'DARK'
+            alert()
         else:
             lightOrDark = 'LIGHT'
     lOld = GPIO.input(lightPin)
