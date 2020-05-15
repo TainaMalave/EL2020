@@ -15,8 +15,8 @@
 <body onload="go()">
 
     <h1>Weather Logger</h1>
-    <h3>Current Temp is: </h3>
-    <h3>Current Humidity is: </h3>
+    <h3>Current Temp is: </h3> <p id = "tempDisplay"></p>
+    <h3>Current Humidity is: </h3> 
     <h3>Current Pressure is: </h3>
 	<center>
 		<div id="gauge" style="width: 250px; height: 250px"></div>
@@ -92,11 +92,18 @@
 	            title: 'Temperture Log',
 	            curveType: 'function',
 	            legend: { position: 'bottom' }
-	        };
+			};
 
 	        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 	        chart.draw(gdata, options);
 	        chartTime = new Date();
+		}
+
+		function displayStats() {
+			$.getJSON('/stats', function(chartJSON) {
+				temp = chartJSON[1];
+				document.getElementById("tempDisplay") = temp;
+			});
 		}
         
 		</script>

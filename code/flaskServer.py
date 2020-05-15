@@ -12,7 +12,9 @@ from flask import Flask, render_template, jsonify, Response
 import sqlite3 as sql
 import json
 import RPi.GPIO as GPIO 
-import time 
+import time
+from weatherLogger import readDHT
+import Adafruit_BMP.BMP085 as BMP085 
 
 #Globals
 redPin = 27
@@ -35,10 +37,13 @@ def chartData():
         chartData.append({"Date": row[0], "Temperature": float(row[1])})
     return Response(json.dumps(chartData), mimetype='application/json')
 
-@app.route("/currentStats")
-def displayStats():
-    
-
+@app.route("/stats")
+def weatherStats():
+    sensor = BMP085.BMP085() # Calling the sensor 
+    pressure = sensor.read_pressure() 
+    tempF, hum = readDHT(tempPin)
+    wStats = [pressureReading, tempF, hum]
+    return Response(json.dumps(wStats), mimetype='application/json')
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', port=2020, debug=True, use_reloader=False)

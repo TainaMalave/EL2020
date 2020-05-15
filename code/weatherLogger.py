@@ -83,7 +83,7 @@ try:
 	while True:
 		if time.time() - oldTime > 59:
 			tempF, humid = readDHT(tempPin)
-			cur.execute('INSERT INTO weather values(?,?,?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid,pressureReading))
+			cur.execute('INSERT INTO weather values(?,?,?,?)', (time.strftime('%Y-%m-%d %H:%M:%S'),tempF,humid,pressureReading))
 			con.commit()
 
 			#Printing to the terminal so that I can keep track of the readings. 
