@@ -63,3 +63,30 @@ Start by plugging the ground and VCC in, just like how we did for the pressure s
 For the light sensor, plug the ground into the ground and VCC into VCC. Finally there is a DO port and you plug that into GPIO 23. 
 
 All the sensors should be wired up at this point. Below is a picture of my sensors and breadboard.
+
+![Pi](pi.jpg)
+
+The final step is to just run the code in this repository. 
+
+The first thing you would want to do is make sure you have flask installed, you can do that by typing: 
+
+    pip install -U Flask
+
+After that is finished you'll be able to run the code. I would start by letting "weatherLogger.py" run for awhile to collect the data. 
+
+    python3 weatherLogger.py
+
+This will run the code and log the temp in to a database. 
+
+When you are ready to run the flask server, all you have to type is: 
+
+    python3 flaskServer.py
+
+This is will the flask server, and you can go to the localhost in your browser. It will display a webpage that gives you the current weather stats, aka the current temp, humidity, pressure and whether its light or dark outside. IF its dark outside, you will receive a text message saying its dark out and to grab your pi (assuming you dont want to leave it outside.) all you have to do is change the variables in flaskServer.py with your info. The page will also display a graph of the temperature. 
+
+Below are pictures of the webpage and what the text will look like when its sent to your phone.
+
+![Web](web.png)
+
+
+![phone](phone.jpg)
