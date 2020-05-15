@@ -20,8 +20,10 @@ import Adafruit_DHT
 #Globals
 redPin = 27
 tempPin = 17
+lightPin = 23
 tempSensor = Adafruit_DHT.DHT11
 GPIO.setmode(GPIO.BCM)
+sensor = BMP085.BMP085() # Calling the sensor 
 app = Flask(__name__)
 
 def readDHT(tempPin):
@@ -34,6 +36,20 @@ def readDHT(tempPin):
 		print('Error Reading Sensor')
 
 	return tempF, humid
+
+def light(lightPin):
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(lightPin, GPIO.IN)
+    lOld = not GPIO.input(lightPin)
+    time.sleep(0.5)
+    if GPIO.input(lightPin) != lOld:
+        if GPIO.input(lightPin):
+            lightOrDark = 'DARK'
+        else:
+            lightOrDark = 'LIGHT'
+    lOld = GPIO.input(lightPin)
+    return lightOrDark
 
 @app.route("/")
 def index():
@@ -54,10 +70,12 @@ def chartData():
 
 @app.route("/stats")
 def weatherStats():
-    sensor = BMP085.BMP085() # Calling the sensor 
+    
     pressure = sensor.read_pressure() 
+    pressureReading = '{0:0.2f}'.format(pressure)
     tempF, hum = readDHT(tempPin)
-    wStats = [tempF, hum]
+    lightOrDark = light(lightPin)
+    wStats = [tempF, hum, pressureReading, lightOrDark]
     print (wStats)
     return Response(json.dumps(wStats), mimetype='application/json')
 

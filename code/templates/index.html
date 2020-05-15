@@ -14,11 +14,12 @@
 
 <body onload="go()">
 
-    <h1 style="text-align: center;">Weather Logger</h1>
-	<h3>Current Temp is: </h3> 
-	<p id = "tempDisplay"></p>
-    <h3>Current Humidity is: </h3> 
-    <h3>Current Pressure is: </h3>
+	<h1 style="text-align: center; font-size: 50px;">Weather Logger</h1>
+	<h2>Below are the current weather stats in my area:</h4>
+	<h3 style="font-size: 25px; font-weight: lighter;">Current Temp is: <span id="tempDisplay" style="font-weight: bold;"></span></h3> 
+	<h3 style="font-size: 25px; font-weight: lighter;">Current Humidity is: <span id="humDisplay" style="font-weight:bold;"></span></h3> 
+	<h3 style="font-size: 25px; font-weight: lighter;">Current Pressure is: <span id="pressDisplay" style="font-weight: bold;"></span></h3> 
+	<h3 style="font-size: 25px;font-weight: lighter;">Light or Dark Outside: <span id="lightDisplay" style="font-weight: bold;"></span></h3> 
 	<center>
 		<div id="gauge" style="width: 250px; height: 250px"></div>
 		<div id="curve_chart" style="width: 1200px; height: 1200px"></div>
@@ -103,9 +104,16 @@
 
 		function displayStats() {
 			$.getJSON('/stats', function(wStats) {
-				temp = wStats[0];
+				var temp = wStats[0];
+				var hum = wStats[1];
+				var pressure = wStats[2];
+				var lightOrDark  = wStats[3];
 				console.log(temp);
+				console.log(pressure);
 				document.getElementById("tempDisplay").innerHTML = temp;
+				document.getElementById("humDisplay").innerHTML = hum;
+				document.getElementById("pressDisplay").innerHTML = pressure;
+				document.getElementById("lightDisplay").innerHTML = lightOrDark;
 			});
 		}
         
