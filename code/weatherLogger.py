@@ -88,7 +88,6 @@ try:
 			print('Temp is: ' + tempF)
 			print('Humidity is: ' + humid)
 			print('Pressure is: ' + pressureReading)
-			print('Sea Level Pressure is: ' + seaReading)
 			print('The altitude is: ' + altitudeReading)
 			light(lightPin)
 

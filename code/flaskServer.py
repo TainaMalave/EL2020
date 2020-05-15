@@ -13,12 +13,27 @@ import sqlite3 as sql
 import json
 import RPi.GPIO as GPIO 
 import time
-from weatherLogger import readDHT
+import Adafruit_GPIO.I2C as I2C
 import Adafruit_BMP.BMP085 as BMP085 
+import Adafruit_DHT
 
 #Globals
 redPin = 27
+tempPin = 17
+tempSensor = Adafruit_DHT.DHT11
+GPIO.setmode(GPIO.BCM)
 app = Flask(__name__)
+
+def readDHT(tempPin):
+	humidity, temperature = Adafruit_DHT.read_retry(tempSensor, tempPin)
+	temperature = temperature * 9/5.0 +32
+	if humidity is not None and temperature is not None:
+		tempF = '{0:0.1f}'.format(temperature)
+		humid = '{1:0.1f}'.format(temperature, humidity)
+	else:
+		print('Error Reading Sensor')
+
+	return tempF, humid
 
 @app.route("/")
 def index():
@@ -42,7 +57,8 @@ def weatherStats():
     sensor = BMP085.BMP085() # Calling the sensor 
     pressure = sensor.read_pressure() 
     tempF, hum = readDHT(tempPin)
-    wStats = [pressureReading, tempF, hum]
+    wStats = [tempF, hum]
+    print (wStats)
     return Response(json.dumps(wStats), mimetype='application/json')
 
 if __name__ == "__main__":

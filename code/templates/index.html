@@ -14,8 +14,9 @@
 
 <body onload="go()">
 
-    <h1>Weather Logger</h1>
-    <h3>Current Temp is: </h3> <p id = "tempDisplay"></p>
+    <h1 style="text-align: center;">Weather Logger</h1>
+	<h3>Current Temp is: </h3> 
+	<p id = "tempDisplay"></p>
     <h3>Current Humidity is: </h3> 
     <h3>Current Pressure is: </h3>
 	<center>
@@ -55,6 +56,7 @@
 				};
 				drawGauge();
 				drawChart();
+				displayStats();
 			});
 		}
 
@@ -100,9 +102,10 @@
 		}
 
 		function displayStats() {
-			$.getJSON('/stats', function(chartJSON) {
-				temp = chartJSON[1];
-				document.getElementById("tempDisplay") = temp;
+			$.getJSON('/stats', function(wStats) {
+				temp = wStats[0];
+				console.log(temp);
+				document.getElementById("tempDisplay").innerHTML = temp;
 			});
 		}
         
