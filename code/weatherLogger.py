@@ -21,8 +21,6 @@ tempSensor = Adafruit_DHT.DHT11
 sensor = BMP085.BMP085() # Calling the sensor 
 pressure = sensor.read_pressure() 
 pressureReading = '{0:0.2f}'.format(pressure)
-seaLvl = sensor.read_sealevel_pressure()
-seaReading = '{0:0.2f}'.format(seaLvl)
 altitude = sensor.read_altitude()
 altitudeReading = '{0:0.2f}'.format(altitude)
 
